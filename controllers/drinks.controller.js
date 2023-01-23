@@ -25,19 +25,33 @@ module.exports.drinksController = {
     },
 
     getAllDrinks: (req, res) => {
-        Drinks.find({}, {"name": req.body.name, "price": req.body.price}).then((drinks) => {
+        Drinks.find({}, {name:1, price:1}).then((drinks) => {
+            res.json(drinks)
+        })
+    },
+
+
+    getDrinksInStuck: (req, res) => {
+        Drinks.find({ inStock:{ $gt: 0}}).then((drinks) => {
             res.json(drinks)
         })
     },
 
     getDrinkById: (req, res) => {
-        Drinks.findById(req.params.id).then((drinks) =>{
+        Drinks.findById(req.params.id).then((drinks) => {
             res.json(drinks)
         }) 
     },
 
     patchDrinkById: (req, res) => {
-        Drinks.findByIdAndUpdate(req,params.id).then((drinks) => {
+        Drinks.findByIdAndUpdate(req.params.id,
+            {name: req.body.name,
+            price:req.body.price,
+            inStock: req. body.inStock,
+            caffeine: req.body.caffeine,
+            volume: req.body.volume,
+            description:req.body.description}
+             ).then((drinks) => {
             res.json(drinks)
         })
     },
